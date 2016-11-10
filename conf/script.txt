@@ -1,0 +1,34 @@
+-- входной поток, неструктурированные данные, json
+@config(async = 'true')
+define stream input(json string);
+
+-- входный поток, частично структурированные данные, из json вычисляем ИД события и время
+@info(name = 'events')
+from input
+select
+  json:int(json, 'id') as id,
+  json:int(json, 'time') as time,
+  json
+insert into events;
+
+-- входной поток, структурированные данные, события тревог
+@info(name = 'alarms')
+from events[id == 1 or id == 2]
+select
+  json:int(json, 'id') as id,
+  json:int(json, 'time') as time,
+  json:int(json, 'args', 'zone') as zone,
+  json:int(json, 'args', 'alarm') as alarm
+insert into alarms;
+
+-- выходной поток, структурированные данные, ложные срабатывания
+@info(name = 'output')
+from every alarmOn = alarms[alarm==1] -> alarmOff = alarms[
+  alarm == 0 and
+  zone == alarmOn.zone and
+  time - alarmOn.time < 5]
+select
+  alarmOn.time as timeOn,
+  alarmOff.time as timeOff,
+  alarmOn.zone as zone
+insert into output;

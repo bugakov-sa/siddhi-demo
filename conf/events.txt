@@ -1,0 +1,5 @@
+{"id": 1, "time": 100, "args": {"alarm": 1, "zone": 1}}
+{"id": 1, "time": 102, "args": {"alarm": 0, "zone": 1}}
+{"id": 2, "time": 110, "args": {"alarm": 1, "zone": 3}}
+{"id": 2, "time": 135, "args": {"alarm": 0, "zone": 3}}
+{"id": 3, "time": 235, "args": {"key": "3458343"}}

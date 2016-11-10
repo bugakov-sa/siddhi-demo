@@ -1,0 +1,2 @@
+str=ext.StringFromJsonExtractor
+int=ext.IntFromJsonExtractor
